@@ -88,6 +88,11 @@ function findSpotForCol(x) {
 
 function placeInTable(y, x) {
   // TODO: make a div and insert into correct table cell
+  const currentCell = document.getElementById(`${y}-${x}`);
+  const piece = document.createElement("div");
+  piece.classList.add(`p${currPlayer}`);
+  piece.classList.add("piece");
+  currentCell.appendChild(piece);
 }
 
 /** endGame: announce game end */
@@ -111,7 +116,7 @@ function handleClick(evt) {
   // place piece in board and add to HTML table
   // TODO: add line to update in-memory board
   placeInTable(y, x);
-
+    
   // check for win
   if (checkForWin()) {
     return endGame(`Player ${currPlayer} won!`);
