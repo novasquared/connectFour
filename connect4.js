@@ -65,8 +65,12 @@ function makeHtmlBoard() {
 /** findSpotForCol: given column x, return top empty y (null if filled) */
 
 function findSpotForCol(x) {
-  // TODO: write the real version of this, rather than always returning 0
-  return 0;
+  for (let y = 0; y < WIDTH; y++) {
+    if (board[y][x] === null) {
+      return y
+    }
+  }
+  return null;
 }
 
 /** placeInTable: update DOM to place piece into HTML table of board */
@@ -113,7 +117,7 @@ function handleClick(evt) {
   }
 
   // switch players
-  currPlayer = (currPlayer === 'p1') ? 'p2' : 'p1';
+  currPlayer = (currPlayer === 1) ? 2 : 1;
 }
 
 /** checkForWin: check board cell-by-cell for "does a win start here?" */
