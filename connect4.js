@@ -19,11 +19,11 @@ let board = []; // array of rows, each row is array of cells  (board[y][x])
 
 function makeBoard() {
   let rowArray = [];
-  
+
   for (let x = 0; x < WIDTH; x++) {
     rowArray.push(null);
   }
-  
+
   for (let y = 0; y < HEIGHT; y++) {
     board.push([...rowArray]);
   }
@@ -48,7 +48,7 @@ function makeHtmlBoard() {
 
   htmlBoard.append(top);
 
-  for (let y = HEIGHT-1; y > -1; y--) {
+  for (let y = HEIGHT - 1; y > -1; y--) {
     let row = document.createElement("tr");
 
     for (let x = 0; x < WIDTH; x++) {
@@ -87,14 +87,15 @@ function placeInTable(y, x) {
 /** endGame: announce game end */
 
 function endGame(msg) {
-  // TODO: pop up alert message
+  alert(msg);
+  //reset player, clear htmlBoard & re-initialize board
 }
 
 /** handleClick: handle click of column top to play piece */
 
 function handleClick(evt) {
   // get x from ID of clicked cell
-  const x = +evt.target.id; //5-0
+  const x = +evt.target.id; //
   // get next spot in column (if none, ignore click)
   const y = findSpotForCol(x);
   if (y === null) {
@@ -102,27 +103,27 @@ function handleClick(evt) {
   }
 
   // place piece in board and add to HTML table
-  board[y][x] = `p${currPlayer}`;
-  
+  board[y][x] = currPlayer;
+
   placeInTable(y, x);
-  
+
   // check for win
   if (checkForWin()) {
     return endGame(`Player ${currPlayer} won!`);
   }
-  
+
   // check for tie
   if (isBoardFilled(board)) {
     endGame('You have tied!');
   }
 
   // switch players
-  currPlayer = (currPlayer === 1) ? 2 : 1;
+  currPlayer = (currPlayer === 1) ? 2 : 1; //
 }
 
 /** checkForWin: check board cell-by-cell for "does a win start here?" */
 function isBoardFilled(board) {
-  return board.every(x => x.every( y => y !== null));
+  return board.every(x => x.every(y => y !== null)); //clearer names for x & y
 }
 
 function checkForWin() {
@@ -136,23 +137,31 @@ function checkForWin() {
 
     // TODO: Check four cells to see if they're all legal & all color of current
     // player
-
+    //x or y is Postive, x < WIDTH & y < HEIGHT
+    for (let coord of cells) {
+      let [ x, y ] = coord;
+      if (x < 0 || y < 0 || y > HEIGHT || x > WIDTH) {
+        break;
+      }
+        //do something when there are 4 in a row
+      }
+    }
   }
 
   // using HEIGHT and WIDTH, generate "check list" of coordinates
   // for 4 cells (starting here) for each of the different
   // ways to win: horizontal, vertical, diagonalDR, diagonalDL
-  for (var y = 0; y < HEIGHT; y++) {
-    for (var x = 0; x < WIDTH; x++) {
+  for (let y = 0; y < HEIGHT; y++) {
+    for (let x = 0; x < WIDTH; x++) {
       // TODO: assign values to the below variables for each of the ways to win
       // horizontal has been assigned for you
       // each should be an array of 4 cell coordinates:
       // [ [y, x], [y, x], [y, x], [y, x] ]
 
       let horiz = [[y, x], [y, x + 1], [y, x + 2], [y, x + 3]];
-      let vert;
-      let diagDL;
-      let diagDR;
+      let vert = [[y, x], [y + 1, x], [y + 2, x], [y + 3, x]];
+      let diagDL = [[y, x], [y + 1, x + 1], [y + 2, x + 2], [y + 3, x + 3]];
+      let diagDR = [[y, x], [y - 1, x - 1], [y - 2, x - 2], [y - 3, x - 3]];
 
       // find winner (only checking each win-possibility as needed)
       if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) {
