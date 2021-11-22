@@ -14,9 +14,10 @@ let currPlayer = 1; // active player: 1 or 2
 let board = []; // array of rows, each row is array of cells  (board[y][x])
 
 /** makeBoard: create in-JS board structure:
- *    board = array of rows, each row is array of cells  (board[y][x])
+ *  board = array of rows, each row contains an array of cells
+ *  the bottom row is the 0 row and the left column is the 0 column 
+ * (board[y][x])
  */
-
 function makeBoard() {
   let rowArray = [];
 
@@ -29,28 +30,34 @@ function makeBoard() {
   }
 }
 
-/** makeHtmlBoard: make HTML table and row of column tops. */
-
+/** makeHtmlBoard: creates an empty HTML table with a clickable row at the top
+  * to allow players to click above the column they want to drop a piece in. 
+*/
 function makeHtmlBoard() {
   const htmlBoard = document.getElementById('board');
 
-  // Make column top a clickable area
+  // Create an empty row at the top and add an event listener to the row.
   const top = document.createElement("tr");
   top.setAttribute("id", "column-top");
   top.addEventListener("click", handleClick);
 
-  // Make, define & insert cells of top row
+  // create cells for the top row with an id equal to the column number.
   for (let x = 0; x < WIDTH; x++) {
     const headCell = document.createElement("td");
     headCell.setAttribute("id", x);
     top.append(headCell);
   }
 
+  // append the top row at the top of the table.
   htmlBoard.append(top);
 
+  // create the rows in the html table
   for (let y = HEIGHT - 1; y > -1; y--) {
     let row = document.createElement("tr");
 
+    // create cells within each row and create an id
+    // with the y and x elements like y-x.
+    // Append each cell to the row.
     for (let x = 0; x < WIDTH; x++) {
       let cell = document.createElement("td");
       cell.setAttribute("id", `${y}-${x}`)
@@ -58,14 +65,18 @@ function makeHtmlBoard() {
       row.append(cell);
 
     }
+
+    // append each row to the html table
     htmlBoard.append(row);
   }
 }
 
-/** findSpotForCol: given column x, return top empty y (null if filled) */
-
+/** 
+ * findSpotForCol: given column x, return the first empty y coordinate 
+ * starting from 0.  Return null if all are full.
+*/
 function findSpotForCol(x) {
-  for (let y = 0; y < WIDTH; y++) {
+  for (let y = 0; y < HEIGHT; y++) {
     if (board[y][x] === null) {
       return y
     }
@@ -73,10 +84,11 @@ function findSpotForCol(x) {
   return null;
 }
 
-/** placeInTable: update DOM to place piece into HTML table of board */
-
+/** 
+ * placeInTable: update DOM to place piece into HTML table of board 
+ * at the correct coordinate
+*/
 function placeInTable(y, x) {
-  // TODO: make a div and insert into correct table cell
   const currentCell = document.getElementById(`${y}-${x}`);
   const piece = document.createElement("div");
   piece.classList.add(`p${currPlayer}`);
@@ -85,14 +97,11 @@ function placeInTable(y, x) {
 }
 
 /** endGame: announce game end */
-
 function endGame(msg) {
   alert(msg);
-  //reset player, clear htmlBoard & re-initialize board
 }
 
 /** handleClick: handle click of column top to play piece */
-
 function handleClick(evt) {
   // get x from ID of clicked cell
   const x = +evt.target.id; //
@@ -109,7 +118,7 @@ function handleClick(evt) {
 
   // check for win
   if (checkForWin()) {
-    return endGame(`Player ${currPlayer} won!`);
+    return endGame(`Player ${currPlayer} won!\n\nPlay again?`);
   }
 
   // check for tie
@@ -127,43 +136,35 @@ function isBoardFilled(board) {
 }
 
 function checkForWin() {
-
   /** _win:
    * takes input array of 4 cell coordinates [ [y, x], [y, x], [y, x], [y, x] ]
    * returns true if all are legal coordinates for a cell & all cells match
    * currPlayer
    */
   function _win(cells) {
-
-    // TODO: Check four cells to see if they're all legal & all color of current
-    // player
-    //x or y is Postive, x < WIDTH & y < HEIGHT
-    for (let coord of cells) {
-      let [ x, y ] = coord;
-      if (x < 0 || y < 0 || y > HEIGHT || x > WIDTH) {
-        break;
-      }
-        //do something when there are 4 in a row
-      }
-    }
+    // Check four cells to see if they're all legal & all color of current player
+    // Returns true if all are legal coordinates & all match currPlayer
+    return cells.every(
+      ([y, x]) =>
+        y >= 0 &&
+        y < HEIGHT &&
+        x >= 0 &&
+        x < WIDTH &&
+        board[y][x] === currPlayer
+    );
   }
 
-  // using HEIGHT and WIDTH, generate "check list" of coordinates
-  // for 4 cells (starting here) for each of the different
+  // using HEIGHT and WIDTH, check all cells and generate a "check list" 
+  // of coordinates for 4 cells and each of the different
   // ways to win: horizontal, vertical, diagonalDR, diagonalDL
   for (let y = 0; y < HEIGHT; y++) {
     for (let x = 0; x < WIDTH; x++) {
-      // TODO: assign values to the below variables for each of the ways to win
-      // horizontal has been assigned for you
-      // each should be an array of 4 cell coordinates:
-      // [ [y, x], [y, x], [y, x], [y, x] ]
-
       let horiz = [[y, x], [y, x + 1], [y, x + 2], [y, x + 3]];
       let vert = [[y, x], [y + 1, x], [y + 2, x], [y + 3, x]];
       let diagDL = [[y, x], [y + 1, x + 1], [y + 2, x + 2], [y + 3, x + 3]];
       let diagDR = [[y, x], [y - 1, x - 1], [y - 2, x - 2], [y - 3, x - 3]];
 
-      // find winner (only checking each win-possibility as needed)
+      // check for any type of win
       if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) {
         return true;
       }
@@ -172,5 +173,4 @@ function checkForWin() {
 }
 
 makeBoard();
-console.log(board)
 makeHtmlBoard();
