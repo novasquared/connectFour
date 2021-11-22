@@ -4,7 +4,7 @@ Connect Four Game
 Simple Connect Four game to play.
 Written in javascript
 
-novasquared.github.io/connectfour/
+https://novasquared.github.io/connectFour/
 
 Click the top of a column to drop your piece.
 
