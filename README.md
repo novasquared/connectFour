@@ -11,4 +11,4 @@ Refresh the browser window to play again.
 
 You can play this game at:
 
-https://novasquared.github.io/ConnectFour/
+https://novasquared.github.io/connectfour/
