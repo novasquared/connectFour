@@ -1,11 +1,14 @@
 # connectFour
-Connect Four Game
+Connect Four
 
-Simple Connect Four game to play.
-Written in javascript
+Simple Connect Four game written in javascript.
 
-https://novasquared.github.io/connectFour/
+Two players alternate turns. On each turn, when a player clicks the top 
+of a column, a piece is dropped until a player gets four-in-a-row (horiz, 
+vert, or diag) or until the board fills (tie).
 
-Click the top of a column to drop your piece.
+Refresh the browser window to play again.
 
-Refresh your browser screen to restart the game.
+You can play this game at:
+
+https://novasquared.github.io/ConnectFour/
