@@ -12,7 +12,6 @@ You can try out this game online:
 
 https://novasquared.github.io/connectfour/
 
-Refresh the browser window to play again.
 
 ## Instructions
 
