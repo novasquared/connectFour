@@ -6,7 +6,11 @@ Connect Four is played on a grid, 7 wide by 6 deep, with two players, 1 (red) an
 
 You can try out this game online:
 
-https://novasquared.github.io/connectfour/
+Two players alternate turns. On each turn, when a player clicks the top 
+of a column, a piece is dropped until a player gets four-in-a-row (horiz, 
+vert, or diag) or until the board fills (tie).
+
+Refresh the browser window to play again.
 
 ## Instructions:
 
